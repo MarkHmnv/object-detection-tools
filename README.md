@@ -20,7 +20,7 @@ Here are examples of how you'd use each tool:
 
 Before using read the [explanatory example with Google 3D](https://drive.google.com/file/d/17INOsLq8YfU0K9wwGxGZX5kY5g3soNS6/view?usp=sharing)
 ```shell
-python blender_object_detection.py 
+python blender_render_labeling.py 
         --project_dir="/path/to/your/project" 
         --frame_start=0 
         --frame_end=100 
