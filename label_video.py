@@ -17,7 +17,7 @@ def draw_boxes(image, model, conf=0.4, half=True):
 
     :return: The image with bounding boxes and labels drawn.
     """
-    results = model(image, conf, half)
+    results = model(image, conf=conf, half=half)
     for result in results:
         for box in result.boxes:
             cls = int(box.cls[0])
@@ -45,13 +45,13 @@ def label_video(video_path, output_directory, model_path, conf=0.4, half=True):
     :return: None
     """
     model = YOLO(model_path)
-    video = cv2.VideoCapture(video_path)
+    video = cv2.VideoCapture(str(video_path))
     width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = video.get(cv2.CAP_PROP_FPS)
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(output_directory / (os.path.basename(video_path) + ".mp4"), fourcc, fps, (width, height))
+    out = cv2.VideoWriter(str(output_directory / (os.path.basename(video_path) + ".mp4")), fourcc, fps, (width, height))
 
     while True:
         ret, frame = video.read()
@@ -59,7 +59,7 @@ def label_video(video_path, output_directory, model_path, conf=0.4, half=True):
         if not ret:
             break
 
-        frame = draw_boxes(frame, model, conf, half)
+        frame = draw_boxes(frame, model, conf=conf, half=half)
 
         out.write(frame)
 
@@ -77,15 +77,15 @@ if __name__ == '__main__':
                         help="YOLOv8 model path used for labeling the video.", required=True)
     parser.add_argument("-c", "--conf",
                         help="The confidence threshold for the bounding boxes.", type=float, default=0.4)
-    parser.add_argument("-h", "--half",
+    parser.add_argument("--half",
                         help="Whether to use half precision for the model.", action='store_true')
 
     args = parser.parse_args()
 
-    image_directory = Path(args.image_directory)
+    video_path = Path(args.video_path)
     output_directory = Path(args.output_directory)
     model = Path(args.model)
     conf = args.conf
     half = args.half
 
-    label_video(image_directory, output_directory, model, conf, half)
+    label_video(video_path, output_directory, model, conf=conf, half=half)

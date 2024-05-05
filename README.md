@@ -36,7 +36,7 @@ python label_images.py
         --output_directory="/path/to/your/output_directory" 
         --model="/path/to/your/YOLOv8_model" 
         --conf=0.4
-        --half=True
+        --half
 ```
 
 3. label_video.py
@@ -46,5 +46,5 @@ python label_video.py
         --output_directory="/path/to/your/output_directory" 
         --model="/path/to/your/YOLOv8_model" 
         --conf=0.4
-        --half=True
+        --half
 ```
