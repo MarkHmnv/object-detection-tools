@@ -23,7 +23,7 @@ def label_images(image_directory, output_directory, model_path, conf=0.4, half=T
     for image_file in os.listdir(image_directory):
         img = cv2.imread(os.path.join(image_directory, image_file))
         filename, _ = os.path.splitext(image_file)
-        results = model(img, conf, half)
+        results = model(img, conf=conf, half=half)
 
         with open(output_directory / (filename + ".txt"), 'w') as f:
             for result in results:
@@ -44,7 +44,7 @@ if __name__ == '__main__':
                         help="YOLOv8 model path used for labeling the images.", required=True)
     parser.add_argument("-c", "--conf",
                         help="The confidence threshold for the bounding boxes.", type=float, default=0.4)
-    parser.add_argument("-h", "--half",
+    parser.add_argument("--half",
                         help="Whether to use half precision for the model.", action='store_true')
 
     args = parser.parse_args()
@@ -55,4 +55,4 @@ if __name__ == '__main__':
     conf = args.conf
     half = args.half
 
-    label_images(image_directory, output_directory, model, conf, half)
+    label_images(image_directory, output_directory, model, conf=conf, half=half)
